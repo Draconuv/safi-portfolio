@@ -137,37 +137,46 @@
   const statCard = document.querySelector('.stat-num')?.closest('.int-card');
   if (statCard) statCard.addEventListener('click', () => runCount(statCard.querySelector('.stat-num')));
 
-  // Hero — colour follows the pointer, glyph-local (see .hero-line-text in styles.css)
-  (() => {
-    const title = document.querySelector('.hero-title');
-    if (!title || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-    const lines = [...title.querySelectorAll('.hero-line-text')];
-    if (!lines.length) return;
+  // Cursor-local spot — one runtime shared by the hero glyphs and the project
+  // cards. The container listens; each target gets --mx/--my measured against
+  // its own box (see .hero-line-text and .work-card::before in styles.css).
+  const cursorSpot = (container, targets) => {
+    if (!container || !targets.length) return;
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
     let raf = null;
     let px = 0;
     let py = 0;
     const paint = () => {
       raf = null;
-      for (const el of lines) {
+      for (const el of targets) {
         const r = el.getBoundingClientRect();
         el.style.setProperty('--mx', (px - r.left) + 'px');
         el.style.setProperty('--my', (py - r.top) + 'px');
       }
     };
-    title.addEventListener('pointermove', (e) => {
+    container.addEventListener('pointermove', (e) => {
       if (e.pointerType !== 'mouse') return;
       px = e.clientX;
       py = e.clientY;
       if (raf === null) raf = requestAnimationFrame(paint);
     }, { passive: true });
-    title.addEventListener('pointerleave', () => {
+    container.addEventListener('pointerleave', () => {
       if (raf !== null) { cancelAnimationFrame(raf); raf = null; }
-      for (const el of lines) {
+      for (const el of targets) {
         el.style.removeProperty('--mx');
         el.style.removeProperty('--my');
       }
     });
-  })();
+  };
+
+  // Hero — colour follows the pointer, glyph-local (see .hero-line-text in styles.css)
+  const heroTitle = document.querySelector('.hero-title');
+  if (heroTitle) cursorSpot(heroTitle, [...heroTitle.querySelectorAll('.hero-line-text')]);
+
+  // Featured projects — the same spot, painted on the card surface instead of
+  // the glyphs, so the card hover speaks the hero's language.
+  const workGrid = document.querySelector('.work-grid');
+  if (workGrid) cursorSpot(workGrid, [...workGrid.querySelectorAll('.work-card')]);
 
   // Demo 5 — sticky shrink mini-viewport
   const vp = document.querySelector('.shrink-viewport');

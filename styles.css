@@ -268,30 +268,34 @@ a { color: inherit; text-decoration: none; }
   gap: 2.5rem;
   padding: 2rem;
   background: var(--bg);
-  transition: background 0.4s ease;
 }
 
-/* Red rule that draws down the left edge on hover. */
+/* Hover: a soft red wash follows the pointer across the card. No flat grey
+   fill, no edge rule, no movement — the same cursor-local language as the
+   hero (see .hero-line-text). --mx/--my are written per card by script.js;
+   the fallback parks the spot off-card, so it only appears under a real
+   pointer, and the focus-visible override re-centres it for keyboard users. */
 .work-card::before {
   content: "";
   position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: var(--red);
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  inset: 0;
+  background: radial-gradient(
+    circle 15rem at var(--mx, -200px) var(--my, -200px),
+    rgba(206, 17, 38, 0.11) 0%,
+    rgba(206, 17, 38, 0.045) 42%,
+    rgba(206, 17, 38, 0) 70%
+  );
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  pointer-events: none;
 }
 
-.work-card:hover,
-.work-card:focus-visible { background: #f4f4f4; }
-
 .work-card:hover::before,
-.work-card:focus-visible::before { transform: scaleY(1); }
+.work-card:focus-visible::before { opacity: 1; }
 
 .work-card:focus-visible {
+  --mx: 35%;
+  --my: 40%;
   outline: 2px solid var(--red);
   outline-offset: -2px;
 }
@@ -307,15 +311,6 @@ a { color: inherit; text-decoration: none; }
   color: rgba(0, 0, 0, 0.35);
   background: var(--ph, var(--stage));
   overflow: hidden;
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 0.5s ease, color 0.4s ease;
-}
-
-.work-card:hover .work-media,
-.work-card:focus-visible .work-media {
-  transform: scale(1.015);
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.07);
-  color: rgba(0, 0, 0, 0.55);
 }
 
 .work-meta { display: block; }
@@ -348,13 +343,6 @@ a { color: inherit; text-decoration: none; }
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 0.3rem 0.65rem;
-  transition: color 0.4s ease, border-color 0.4s ease;
-}
-
-.work-card:hover .work-tags li,
-.work-card:focus-visible .work-tags li {
-  color: var(--accent);
-  border-color: rgba(206, 17, 38, 0.35);
 }
 
 .work-title {
@@ -362,11 +350,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 600;
   letter-spacing: -0.01em;
   margin-bottom: 0.4rem;
-  transition: color 0.4s ease;
 }
-
-.work-card:hover .work-title,
-.work-card:focus-visible .work-title { color: var(--red); }
 
 .work-desc {
   font-size: 0.9rem;
@@ -380,11 +364,7 @@ a { color: inherit; text-decoration: none; }
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--accent);
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
-
-.work-card:hover .work-link,
-.work-card:focus-visible .work-link { transform: translateX(4px); }
 
 span.work-link { color: #bbb; font-weight: 500; }
 
@@ -732,17 +712,7 @@ span.work-link { color: #bbb; font-weight: 500; }
   .draw-svg .draw { stroke-dashoffset: 0; }
   .draw-svg .tx { stroke-dashoffset: 0; }
 
-  .work-card,
-  .work-card::before,
-  .work-media,
-  .work-title,
-  .work-link,
-  .work-tags li { transition: none; }
-
-  .work-card:hover .work-link,
-  .work-card:focus-visible .work-link,
-  .work-card:hover .work-media,
-  .work-card:focus-visible .work-media { transform: none; }
+  .work-card::before { transition: none; }
   .draw-svg.is-drawn .draw,
   .draw-svg.is-drawn .tx { animation: none; }
 
