@@ -15,7 +15,7 @@
   ];
   heroEls.forEach((el, i) => el.style.setProperty('--d', String(i * 0.15) + 's'));
   document.querySelectorAll('.int-grid .int-card').forEach((el, i) => el.style.setProperty('--d', String((i % 2) * 0.08 + Math.floor(i / 2) * 0.04) + 's'));
-  document.querySelectorAll('.work-grid .work-card').forEach((el, i) => el.style.setProperty('--d', String((i % 2) * 0.08 + Math.floor(i / 2) * 0.05) + 's'));
+  document.querySelectorAll('.work-grid .work-card').forEach((el, i) => el.style.setProperty('--d', String(i * 0.15) + 's'));
 
   const io = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
