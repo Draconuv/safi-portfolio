@@ -116,27 +116,24 @@ a { color: inherit; text-decoration: none; }
   display: inline-flex;
   padding: 0.02em 0.14em 0.06em;
   margin-left: -0.14em;
+  transition: transform 0.3s ease;
 }
 
 .hero-line-text {
   display: inline-block;
   padding: 0 0.04em;
-  color: var(--red);
-  transition: color 0.35s ease;
+  transition: color 0.3s ease;
 }
 
-/* Variant D: outlined at rest, fills solid on hover.
-   Fallback above keeps the line readable if text-stroke is unavailable. */
-@supports (-webkit-text-stroke: 1px red) {
-  .hero-line-text {
-    color: transparent;
-    -webkit-text-stroke: 0.035em var(--red);
-  }
+/* Variant C: type turns red and steps right on hover. */
+.hero-line:hover,
+.hero-line:focus-within {
+  transform: translateX(0.06em);
+}
 
-  .hero-line:hover .hero-line-text,
-  .hero-line:focus-within .hero-line-text {
-    color: var(--red);
-  }
+.hero-line:hover .hero-line-text,
+.hero-line:focus-within .hero-line-text {
+  color: var(--red);
 }
 
 .hero-sub {
@@ -214,7 +211,11 @@ a { color: inherit; text-decoration: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .btn,
+  .hero-line,
   .hero-line-text { transition: none; }
+
+  .hero-line:hover,
+  .hero-line:focus-within { transform: none; }
 }
 
 /* ============================
