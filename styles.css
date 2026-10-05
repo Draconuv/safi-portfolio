@@ -9,6 +9,8 @@
   --muted: #6b6b6b;
   --line: #e5e5e5;
   --accent: #c75146;
+  --red: #ce1126;
+  --red-deep: #a80e1f;
   --stage: #f0ece4;
   --radius: 8px;
   --pad: 24px;
@@ -115,153 +117,73 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: 2rem;
 }
 
-.hero-cta {
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+}
+
+.btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--ink);
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 2px;
-  min-height: 48px;
-  transition: color 0.2s, border-color 0.2s;
-}
-
-.hero-cta i { font-style: normal; transition: transform 0.3s; }
-
-.hero-cta:hover {
-  color: var(--accent);
-  border-color: var(--accent);
-}
-
-.hero-cta:hover i { transform: translateY(3px); }
-
-/* ============================
-   CTA variants (hero lab)
-   v1 = default quiet link.
-   v2/v3/v4 applied via .hero-cta.vN
-   ============================ */
-
-.hero-cta { position: relative; }
-.hero-cta i { display: inline-block; }
-
-/* Variant 2 — ink pill, arrow slides right, fill flips to accent on hover */
-.hero-cta.v2 {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  background: var(--ink);
-  color: #fff;
-  padding: 0 30px;
-  min-height: 52px;
-  border-radius: 999px;
-  border-bottom: none;
-  transition: background 0.25s ease, transform 0.25s ease;
-}
-
-.hero-cta.v2:hover {
-  background: var(--accent);
-  transform: translateY(-1px);
-  color: #fff;
-}
-
-.hero-cta.v2:hover i { transform: translateX(4px); }
-
-.hero-cta.v2:active { transform: translateY(0); }
-
-/* Variant 3 — outline pill, ink sweep fills from left, text flips light */
-.hero-cta.v3 {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  min-height: 52px;
-  padding: 0 22px 0 30px;
-  border-radius: 999px;
-  border: 1.5px solid var(--ink);
-  overflow: hidden;
-  color: var(--ink);
-  transition: color 0.3s ease;
-}
-
-.hero-cta.v3::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--ink);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-  z-index: 0;
-}
-
-.hero-cta.v3 > * { position: relative; z-index: 1; }
-
-.hero-cta.v3:hover,
-.hero-cta.v3:hover i { color: #fff; }
-
-.hero-cta.v3:hover::before { transform: scaleX(1); }
-
-.hero-cta.v3:hover i { transform: translateY(3px); }
-
-/* Variant 4 — accent pill, soft shadow lift, press sinks */
-.hero-cta.v4 {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
   min-height: 52px;
   padding: 0 30px;
   border-radius: 10px;
-  border-bottom: none;
-  background: var(--accent);
-  color: #fff;
-  transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.15s ease;
-}
-
-.hero-cta.v4:hover {
-  background: #ad4338;
-  box-shadow: 0 8px 24px rgba(199, 81, 70, 0.28);
-}
-
-.hero-cta.v4:active { transform: translateY(1px); box-shadow: none; }
-
-.hero-cta.v4:hover i { transform: translateY(3px); }
-
-/* Variant switcher — crafting scaffold, removed after ruling */
-.cta-lab {
-  display: flex;
-  gap: 8px;
-  margin-top: 1.25rem;
-  align-items: center;
-}
-
-.cta-lab button {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 1px solid var(--line);
-  background: #fff;
-  color: var(--muted);
-  font-size: 0.72rem;
+  border: 1.5px solid transparent;
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  transition: background 0.3s cubic-bezier(0.22,1,0.36,1), color 0.3s ease,
+              border-color 0.3s ease, transform 0.25s ease, box-shadow 0.3s ease;
 }
 
-.cta-lab button:hover { border-color: var(--accent); color: var(--accent); }
+.btn:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
 
-.cta-lab button.active {
-  background: var(--ink);
+/* Primary — red fill, deepens and lifts on hover */
+.btn-primary {
+  background: var(--red);
   color: #fff;
+  box-shadow: 0 2px 10px rgba(206, 17, 38, 0.22);
+}
+
+.btn-primary:hover {
+  background: var(--red-deep);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(206, 17, 38, 0.32);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(206, 17, 38, 0.24);
+}
+
+/* Secondary — ink outline, fills ink on hover */
+.btn-secondary {
+  background: transparent;
+  color: var(--ink);
   border-color: var(--ink);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .hero-cta {
-    transition: none;
-  }
+.btn-secondary:hover {
+  background: var(--ink);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(26, 26, 26, 0.18);
+}
 
-  .hero-cta.v3::before { transition: none; }
+.btn-secondary:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn { transition: none; }
 }
 
 /* ============================
