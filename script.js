@@ -137,6 +137,38 @@
   const statCard = document.querySelector('.stat-num')?.closest('.int-card');
   if (statCard) statCard.addEventListener('click', () => runCount(statCard.querySelector('.stat-num')));
 
+  // Hero — colour follows the pointer, glyph-local (see .hero-line-text in styles.css)
+  (() => {
+    const title = document.querySelector('.hero-title');
+    if (!title || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    const lines = [...title.querySelectorAll('.hero-line-text')];
+    if (!lines.length) return;
+    let raf = null;
+    let px = 0;
+    let py = 0;
+    const paint = () => {
+      raf = null;
+      for (const el of lines) {
+        const r = el.getBoundingClientRect();
+        el.style.setProperty('--mx', (px - r.left) + 'px');
+        el.style.setProperty('--my', (py - r.top) + 'px');
+      }
+    };
+    title.addEventListener('pointermove', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      px = e.clientX;
+      py = e.clientY;
+      if (raf === null) raf = requestAnimationFrame(paint);
+    }, { passive: true });
+    title.addEventListener('pointerleave', () => {
+      if (raf !== null) { cancelAnimationFrame(raf); raf = null; }
+      for (const el of lines) {
+        el.style.removeProperty('--mx');
+        el.style.removeProperty('--my');
+      }
+    });
+  })();
+
   // Demo 5 — sticky shrink mini-viewport
   const vp = document.querySelector('.shrink-viewport');
   if (vp) {

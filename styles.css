@@ -116,24 +116,29 @@ a { color: inherit; text-decoration: none; }
   display: inline-flex;
   padding: 0.02em 0.14em 0.06em;
   margin-left: -0.14em;
-  transition: transform 0.3s ease;
 }
 
 .hero-line-text {
   display: inline-block;
   padding: 0 0.04em;
-  transition: color 0.3s ease;
 }
 
-/* Variant C: type turns red and steps right on hover. */
-.hero-line:hover,
-.hero-line:focus-within {
-  transform: translateX(0.06em);
-}
-
-.hero-line:hover .hero-line-text,
-.hero-line:focus-within .hero-line-text {
-  color: var(--red);
+/* Cursor-local colour: only the glyphs under the pointer turn red.
+   One radial spot painted through the text; --mx/--my are set per line by
+   script.js from pointermove, so no duplicate layer has to stay in sync. */
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .hero-line-text {
+    color: var(--ink);
+    -webkit-text-fill-color: transparent;
+    background-image: radial-gradient(
+      circle 6rem at var(--mx, -200px) var(--my, -200px),
+      var(--red) 0%,
+      var(--red) 55%,
+      var(--ink) 85%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
 }
 
 .hero-sub {
@@ -210,12 +215,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .btn,
-  .hero-line,
-  .hero-line-text { transition: none; }
-
-  .hero-line:hover,
-  .hero-line:focus-within { transform: none; }
+  .btn { transition: none; }
 }
 
 /* ============================
