@@ -138,6 +138,133 @@ a { color: inherit; text-decoration: none; }
 .hero-cta:hover i { transform: translateY(3px); }
 
 /* ============================
+   CTA variants (hero lab)
+   v1 = default quiet link.
+   v2/v3/v4 applied via .hero-cta.vN
+   ============================ */
+
+.hero-cta { position: relative; }
+.hero-cta i { display: inline-block; }
+
+/* Variant 2 — ink pill, arrow slides right, fill flips to accent on hover */
+.hero-cta.v2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--ink);
+  color: #fff;
+  padding: 0 30px;
+  min-height: 52px;
+  border-radius: 999px;
+  border-bottom: none;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.hero-cta.v2:hover {
+  background: var(--accent);
+  transform: translateY(-1px);
+  color: #fff;
+}
+
+.hero-cta.v2:hover i { transform: translateX(4px); }
+
+.hero-cta.v2:active { transform: translateY(0); }
+
+/* Variant 3 — outline pill, ink sweep fills from left, text flips light */
+.hero-cta.v3 {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 52px;
+  padding: 0 22px 0 30px;
+  border-radius: 999px;
+  border: 1.5px solid var(--ink);
+  overflow: hidden;
+  color: var(--ink);
+  transition: color 0.3s ease;
+}
+
+.hero-cta.v3::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 0;
+}
+
+.hero-cta.v3 > * { position: relative; z-index: 1; }
+
+.hero-cta.v3:hover,
+.hero-cta.v3:hover i { color: #fff; }
+
+.hero-cta.v3:hover::before { transform: scaleX(1); }
+
+.hero-cta.v3:hover i { transform: translateY(3px); }
+
+/* Variant 4 — accent pill, soft shadow lift, press sinks */
+.hero-cta.v4 {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 52px;
+  padding: 0 30px;
+  border-radius: 10px;
+  border-bottom: none;
+  background: var(--accent);
+  color: #fff;
+  transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.15s ease;
+}
+
+.hero-cta.v4:hover {
+  background: #ad4338;
+  box-shadow: 0 8px 24px rgba(199, 81, 70, 0.28);
+}
+
+.hero-cta.v4:active { transform: translateY(1px); box-shadow: none; }
+
+.hero-cta.v4:hover i { transform: translateY(3px); }
+
+/* Variant switcher — crafting scaffold, removed after ruling */
+.cta-lab {
+  display: flex;
+  gap: 8px;
+  margin-top: 1.25rem;
+  align-items: center;
+}
+
+.cta-lab button {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.cta-lab button:hover { border-color: var(--accent); color: var(--accent); }
+
+.cta-lab button.active {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-cta {
+    transition: none;
+  }
+
+  .hero-cta.v3::before { transition: none; }
+}
+
+/* ============================
    Sections
    ============================ */
 
@@ -552,8 +679,8 @@ span.work-link { color: #bbb; font-weight: 500; }
 
 .reveal {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transform: translateY(28px);
+  transition: opacity 1.4s cubic-bezier(0.22,1,0.36,1), transform 1.4s cubic-bezier(0.22,1,0.36,1);
   transition-delay: var(--d, 0s);
 }
 

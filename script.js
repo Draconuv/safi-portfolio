@@ -7,6 +7,8 @@
   // Staggered reveal on scroll (also covers the hero entrance once)
   const revealables = document.querySelectorAll('.hero .eyebrow, .hero .hero-title, .hero .hero-sub, .hero .hero-cta, .section-head, .work-card, .int-card, .about-grid, .contact-text, .contact-email, .contact-links');
   revealables.forEach((el, i) => el.classList.add('reveal'));
+  const heroEls = document.querySelectorAll('.hero .eyebrow, .hero .hero-title, .hero .hero-sub, .hero .hero-cta');
+  heroEls.forEach((el, i) => el.style.setProperty('--d', String(i * 0.18) + 's'));
   document.querySelectorAll('.int-grid .int-card').forEach((el, i) => el.style.setProperty('--d', String((i % 2) * 0.08 + Math.floor(i / 2) * 0.04) + 's'));
   document.querySelectorAll('.work-grid .work-card').forEach((el, i) => el.style.setProperty('--d', String((i % 2) * 0.08 + Math.floor(i / 2) * 0.05) + 's'));
 
@@ -137,5 +139,33 @@
     const onScroll = () => miniNav.classList.toggle('shrunk', vp.scrollTop > 12);
     vp.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
+  }
+
+  // ----------------------------
+  // Hero CTA crafting lab (temporary scaffold — remove after ruling)
+  // Keys 1-4 or click the dots to switch hero CTA variant.
+  // ----------------------------
+  const cta = document.querySelector('.hero-cta');
+  const lab = document.querySelector('.cta-lab');
+  if (cta && lab) {
+    const dots = Array.from(lab.querySelectorAll('button'));
+    const setVariant = (name) => {
+      cta.classList.remove('v2', 'v3', 'v4');
+      if (name && name !== 'v1') cta.classList.add(name);
+      dots.forEach((d) => d.classList.toggle('active', d.dataset.variant === name));
+      try { localStorage.setItem('cta-variant', name); } catch (e) {}
+    };
+    dots.forEach((d) => d.addEventListener('click', (e) => {
+      e.preventDefault();
+      setVariant(d.dataset.variant);
+    }));
+    document.addEventListener('keydown', (e) => {
+      if (e.target.matches && e.target.matches('input, textarea')) return;
+      const map = { 1: 'v1', 2: 'v2', 3: 'v3', 4: 'v4' };
+      if (map[e.key]) setVariant(map[e.key]);
+    });
+    let saved = 'v1';
+    try { saved = localStorage.getItem('cta-variant') || 'v1'; } catch (e) {}
+    setVariant(saved);
   }
 })());
