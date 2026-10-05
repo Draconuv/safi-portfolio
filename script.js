@@ -5,10 +5,15 @@
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Staggered reveal on scroll (also covers the hero entrance once)
-  const revealables = document.querySelectorAll('.hero .eyebrow, .hero .hero-title, .hero .hero-sub, .hero .hero-actions, .section-head, .work-card, .int-card, .about-grid, .contact-text, .contact-email, .contact-links');
+  const revealables = document.querySelectorAll('.hero .eyebrow, .hero .hero-line, .hero .hero-sub, .hero .hero-actions, .section-head, .work-card, .int-card, .about-grid, .contact-text, .contact-email, .contact-links');
   revealables.forEach((el, i) => el.classList.add('reveal'));
-  const heroEls = document.querySelectorAll('.hero .eyebrow, .hero .hero-title, .hero .hero-sub, .hero .hero-actions');
-  heroEls.forEach((el, i) => el.style.setProperty('--d', String(i * 0.18) + 's'));
+  const heroEls = [
+    ...document.querySelectorAll('.hero .eyebrow'),
+    ...document.querySelectorAll('.hero .hero-line'),
+    ...document.querySelectorAll('.hero .hero-sub'),
+    ...document.querySelectorAll('.hero .hero-actions')
+  ];
+  heroEls.forEach((el, i) => el.style.setProperty('--d', String(i * 0.15) + 's'));
   document.querySelectorAll('.int-grid .int-card').forEach((el, i) => el.style.setProperty('--d', String((i % 2) * 0.08 + Math.floor(i / 2) * 0.04) + 's'));
   document.querySelectorAll('.work-grid .work-card').forEach((el, i) => el.style.setProperty('--d', String((i % 2) * 0.08 + Math.floor(i / 2) * 0.05) + 's'));
 
