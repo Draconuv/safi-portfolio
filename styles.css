@@ -121,20 +121,22 @@ a { color: inherit; text-decoration: none; }
 .hero-line-text {
   display: inline-block;
   padding: 0 0.04em;
-  border-radius: 6px;
-  background-image: linear-gradient(var(--red), var(--red));
-  background-repeat: no-repeat;
-  background-position: 0 50%;
-  background-size: 0% 100%;
-  transition: background-size 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.25s ease, box-shadow 0.35s ease;
+  color: var(--red);
+  transition: color 0.35s ease;
 }
 
-.hero-line:hover .hero-line-text,
-.hero-line:focus-within .hero-line-text {
-  background-size: 100% 100%;
-  transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(206, 17, 38, 0.28);
+/* Variant D: outlined at rest, fills solid on hover.
+   Fallback above keeps the line readable if text-stroke is unavailable. */
+@supports (-webkit-text-stroke: 1px red) {
+  .hero-line-text {
+    color: transparent;
+    -webkit-text-stroke: 0.035em var(--red);
+  }
+
+  .hero-line:hover .hero-line-text,
+  .hero-line:focus-within .hero-line-text {
+    color: var(--red);
+  }
 }
 
 .hero-sub {
@@ -213,9 +215,6 @@ a { color: inherit; text-decoration: none; }
 @media (prefers-reduced-motion: reduce) {
   .btn,
   .hero-line-text { transition: none; }
-
-  .hero-line:hover .hero-line-text,
-  .hero-line:focus-within .hero-line-text { transform: none; }
 }
 
 /* ============================
